@@ -7,13 +7,11 @@ const port = 3000
 
 app.get('/', (req,res) => res.send('hello, express 3!'))
 
-
+ // nombre total de cryptos au format JSON
 app.get('/api/cryptos', (req,res) => {
     const message = 'la liste des crypto a bien été trouvée'
     res.json(success(message, cryptos))
 })
-
-
 
 app.get('/api/cryptos/:id', (req,res) => {
  const id = parseInt(req.params.id)
@@ -21,10 +19,5 @@ app.get('/api/cryptos/:id', (req,res) => {
  const message = 'une crypto a bien été trouvée'
  res.json(success(message, crypto))
 })
- // nombre total de cryptos
 
-
-
-
-
-app.listen(port, () => console.log(`notre application Node est démarrée sur : http://localhost:${port}`))
+app.listen(port, () => console.log())
