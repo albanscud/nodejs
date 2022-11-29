@@ -5,6 +5,11 @@ let cryptos = require ('./mock-cryptos');
 const app = express()
 const port = 3000
 
+app.use((req, res, next) => {
+    console.log(`URL : ${req.url}`)
+    next()
+})
+
 app.get('/', (req,res) => res.send('hello, express 3!'))
 
  // nombre total de cryptos au format JSON
@@ -20,4 +25,4 @@ app.get('/api/cryptos/:id', (req,res) => {
  res.json(success(message, crypto))
 })
 
-app.listen(port, () => console.log())
+app.listen(port,() => console.log(`notre application est bien demarée sur : http://localhost:${port}`))
