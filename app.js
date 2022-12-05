@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const favicon = require('serve-favicon')
+const bodyParser = require('body-parser')
 const { success, getUniqueId } = require('./helper.js')
 let cryptos = require ('./mock-cryptos');
 
@@ -10,6 +11,7 @@ const port = 3000
 app
   .use(favicon(__dirname + '/favicon.ico'))
   .use(morgan('dev'))
+  .use(bodyParser.json())
 
 app.get('/', (req,res) => res.send('hello, express 3!'))
 
@@ -31,7 +33,16 @@ app.post('/api/cryptos', (req, res) => {
     const cryptoCreated = { ...req.body, ... {id: id, created :new Date ()}}
     cryptos.push(cryptoCreated)
     const message = `une crypto ${cryptoCreated.name} a bien été créée`
-    res.json(success(message, cryptoCreated))
+    res.json(success(message, cryptoCreated))   
 })
 
-app.listen(port,() => console.log(`notre application est bien demarée sur : http://localhost:${port}`))
+app.put('/api/cryptos/:id', (req, res) => {
+  const id = parseInt(req.params.id)
+  const cryptoUpdated = { ... req.body, id: id }
+  cryptos = cryptos.map(crypto => {
+    return crypto.id === id ? cryptoUpdated : crypto
+  })
+  const message = `la crypto ${cryptoUpdated} a bien été modifiée`
+  res.json(success(message, cryptoUpdated))
+})
+  app.listen(port,() => console.log(`notre application est bien demarée sur : http://localhost:${port}`))
